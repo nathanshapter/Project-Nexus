@@ -44,7 +44,18 @@ public class Card : MonoBehaviour
 
 
     }
+    private void CardNeutralised() // if cards have same value
+    {
 
+    }
+    private void CardDefeated() // if card used has bigger value than other card
+    {
+
+    }
+    private void CardDefense() // if card used to defend
+    {
+
+    }
 }
 
 
