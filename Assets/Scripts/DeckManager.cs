@@ -47,7 +47,7 @@ public class DeckManager : MonoBehaviour
 
         ShuffleDeck();
 
-        StartCoroutine(PlaceCardsInHand());
+        StartCoroutine(PlaceCardsInHand(playerDeck));
     }
 
     void ShuffleDeck()
@@ -63,7 +63,7 @@ public class DeckManager : MonoBehaviour
             deck[randomIndex] = temp;
         }
     }
-    private IEnumerator PlaceCardsInHand()
+    private IEnumerator PlaceCardsInHand(bool isPlayerCard)
     {
         int cardsToPlace = Mathf.Min(handSize, deck.Count, playingCardPosition.Length);
         for (int i = 0; i < cardsToPlace; i++) 
@@ -80,7 +80,7 @@ public class DeckManager : MonoBehaviour
                 }
                 deck[i].gameObject.GetComponent<Card>().isInHand = true;
             }
-
+            deck[i].gameObject.GetComponent<Card>().isPlayerCard = isPlayerCard; 
 
 
             deck[i].transform.position = playingCardPosition[i].transform.position;
