@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 392102743038139469}
   - component: {fileID: 5097179231553258259}
   - component: {fileID: 605743701065406426}
-  m_Layer: 0
+  - component: {fileID: 3752442915620608573}
+  m_Layer: 6
   m_Name: Card 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27,8 +28,8 @@ Transform:
   m_GameObject: {fileID: 2169128124111445635}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.3495224, y: -1.3495771, z: 0}
-  m_LocalScale: {x: 0.15736, y: 0.15736, z: 0.15736}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 3.7755384, y: 3.7755384, z: 3.7755384}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -106,3 +107,49 @@ MonoBehaviour:
   - {fileID: 7390830108107720003, guid: a43d65c7a0498084c9332bb79e26ea77, type: 3}
   - {fileID: -4497456163085230712, guid: 301baa7a400e65e4d8a11a89574eaace, type: 3}
   - {fileID: -9218619252502422449, guid: 812b227177926a7489cdc7db91ee05b9, type: 3}
+--- !u!61 &3752442915620608573
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2169128124111445635}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 5, y: 7.26}
+    newSize: {x: 5, y: 7.26}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 5, y: 7.26}
+  m_EdgeRadius: 0
