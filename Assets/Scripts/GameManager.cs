@@ -5,6 +5,7 @@ public class GameManager : MonoBehaviour
    public static GameManager instance { get; private set; }
   [SerializeField]  DeckManager playerDeckManager, computerDeckManager;
     public bool playerTurn = true;
+    PCBrain npc;
 
     private void Awake()
     {
@@ -15,7 +16,7 @@ public class GameManager : MonoBehaviour
         }
         instance = this;
         DontDestroyOnLoad(gameObject);
-
+        npc = FindFirstObjectByType<PCBrain>();
 
         
     }
@@ -27,7 +28,8 @@ public class GameManager : MonoBehaviour
 
         if (!playerTurn)
         {
-            print("computers turn");
+            print("computers turn now");
+            npc.PCTurnStarted();
         }
 
 

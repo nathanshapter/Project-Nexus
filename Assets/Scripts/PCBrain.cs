@@ -2,15 +2,24 @@ using UnityEngine;
 
 public class PCBrain : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+
+    DeckManager deckManager;
+  [SerializeField]  GameObject PCHand;
+
+  [SerializeField]  Card[] cardsInPCHand;
+
+
+
+    private void Start()
     {
-        
+        deckManager = GetComponent<DeckManager>();
+    }
+    public void PCTurnStarted()
+    {
+        print("pc turn");
+        cardsInPCHand = PCHand.GetComponentsInChildren<Card>();
+
+
     }
 }

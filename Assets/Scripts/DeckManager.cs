@@ -26,6 +26,8 @@ public class DeckManager : MonoBehaviour
 
     [SerializeField] float timeInBetweenCard = 0.3f;
 
+    [SerializeField] GameObject[] row;
+
 
     private void Start()
     {
@@ -51,7 +53,10 @@ public class DeckManager : MonoBehaviour
 
         StartCoroutine(PlaceCardsInHand(playerDeck));
     }
+    void ChooseRowPosition(GameObject row)
+    {
 
+    }
     void ShuffleDeck()
     {
        
@@ -87,8 +92,29 @@ public class DeckManager : MonoBehaviour
 
             deck[i].transform.position = playingCardPosition[i].transform.position;
 
-           
+           if(i <= 3)
+            {
+                deck[i].transform.parent = row[0].transform;
+            }
 
+
+            if (i >3 && i <= 6)
+            {
+                deck[i].transform.parent = row[1].transform;
+            }
+
+            if(i > 6 && i <= 8)
+            {
+                deck[i].transform.parent = row[2].transform;
+            }
+            if (i == 9)
+            {
+                deck[i].transform.parent = row[3].transform;
+            }
+            if (i > 9)
+            {
+                deck[i].transform.parent = row[4].transform;
+            }
         }
 
         
