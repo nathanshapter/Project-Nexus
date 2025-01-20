@@ -4,6 +4,7 @@ public class HandManager : MonoBehaviour
 {
     public int currentValue;
     public Card cardInUse;
+   [SerializeField] DeckManager deckManager;
 
     private void Start()
     {
@@ -14,6 +15,9 @@ public class HandManager : MonoBehaviour
     {
         currentValue = i;
         print("Holding card" + currentValue);
+
+        
+
     }
 
    

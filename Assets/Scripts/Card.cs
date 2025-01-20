@@ -9,7 +9,7 @@ public class Card : MonoBehaviour
     public bool isPlayerCard = true;
     private HandManager handManager;
 
-   [SerializeField] DeckManager deckManager;
+   public DeckManager deckManager;
 
     
 
@@ -37,6 +37,7 @@ public class Card : MonoBehaviour
         {
             Card currentCard = gameObject.GetComponent<Card>();
             handManager.cardInUse = currentCard;
+            
 
             if (currentCard.isInHand)
             {
@@ -75,21 +76,32 @@ public class Card : MonoBehaviour
     }
     private void CardNeutralised() // if cards have same value
     {
-        
+        if (!isPlayerCard) 
+        {
+            deckManager.deck.Remove(this.gameObject);
+            deckManager.discardedCards.Add(this.gameObject);
+            GameObject nextCard = (deckManager.deck[13]); // always plays the card in position 13 as that is the next card
+            this.gameObject.transform.position = deckManager.deckPosition.position;
+            this.gameObject.transform.parent = deckManager.deckPosition;
+            print("next card to be played from PC" + nextCard.name);
 
-        // PC card
+
+            // player card logic
+
+          //  handManager.cardInUse.gameObject.SetActive(false);
+
+            handManager.cardInUse.deckManager.deck.Remove(handManager.cardInUse.gameObject);
+            handManager.cardInUse.deckManager.discardedCards.Add(handManager.cardInUse.gameObject);
+
+
+        } // not owrking for player card because it is not being clicked on
+    
        
-        deckManager.deck.Remove(this.gameObject);
-        deckManager.deck.Add(this.gameObject);
-        GameObject nextCard = (deckManager.deck[13]); // always plays the card in position 13 as that is the next card
 
-        print("next card to be played " +  nextCard.name);
-
-       // this.gameObject.SetActive(false); // this is PC card
-       this.gameObject.transform.position = deckManager.deckPosition.position;
-      
+     
         
-        handManager.cardInUse.gameObject.SetActive(false); // player card
+
+
 
 
         print("cards neutralised");

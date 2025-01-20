@@ -1028,6 +1028,7 @@ MonoBehaviour:
   - {fileID: 1699349523}
   - {fileID: 1829925704}
   - {fileID: 1580847856}
+  discardedCards: []
 --- !u!4 &627630472
 Transform:
   m_ObjectHideFlags: 0
@@ -1617,6 +1618,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentValue: 0
   cardInUse: {fileID: 0}
+  deckManager: {fileID: 627630471}
 --- !u!4 &1013617036
 Transform:
   m_ObjectHideFlags: 0
@@ -2571,6 +2573,7 @@ MonoBehaviour:
   - {fileID: 1164712980}
   - {fileID: 1866489939}
   - {fileID: 958947716}
+  discardedCards: []
 --- !u!4 &1856562608
 Transform:
   m_ObjectHideFlags: 0

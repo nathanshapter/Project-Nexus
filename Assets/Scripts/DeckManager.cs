@@ -28,7 +28,7 @@ public class DeckManager : MonoBehaviour
 
     [SerializeField] GameObject[] row;
 
-
+    public List<GameObject> discardedCards;
     private void Start()
     {
         for (int i = 0; i < playingCardPosition.Length; i++) // deactivates the playing cards visuals
