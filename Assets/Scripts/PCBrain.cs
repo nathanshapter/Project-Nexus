@@ -101,9 +101,15 @@ public class PCBrain : MonoBehaviour // script is used to take care of all of th
     }
     void NeutraliseCards(Card playerCard, Card PCCard, bool turnOver) // turn continues if cards are equal, if not, it will end, bool used to indicate turn over or not
     {
+        // if the card has already been used to equalise or as a larger card, return
 
-        PCCard.deckManager.deck.Remove(this.gameObject);
-        PCCard.deckManager.discardedCards.Add(this.gameObject);
+        if (PCCard.CardUsedByPC)
+            return;
+
+        PCCard.CardUsedByPC = true;
+
+        PCCard.deckManager.deck.Remove(PCCard.gameObject);
+        PCCard.deckManager.discardedCards.Add(PCCard.gameObject);
 
         PCCard.deckManager.nextCardsToPlay.Add(deckManager.deck[13]);
         PCCard.deckManager.deck.Remove(deckManager.deck[13]);
@@ -114,8 +120,8 @@ public class PCBrain : MonoBehaviour // script is used to take care of all of th
 
 
 
-        playerCard.deckManager.deck.Remove(this.gameObject);
-        playerCard.deckManager.discardedCards.Add(this.gameObject);
+        playerCard.deckManager.deck.Remove(playerCard.gameObject);
+        playerCard.deckManager.discardedCards.Add(playerCard.gameObject);
 
         playerCard.deckManager.nextCardsToPlay.Add(deckManager.deck[13]);
         playerCard.deckManager.deck.Remove(deckManager.deck[13]);

@@ -13,7 +13,7 @@ public class Card : MonoBehaviour
 
    public DeckManager deckManager;
 
-    
+    public bool CardUsedByPC = false;
 
     
     private void Start()
