@@ -79,6 +79,8 @@ public class Card : MonoBehaviour
     {
         if (!isPlayerCard) // only works if selected card of player can interact with enemy card by being equal
         {
+           
+
             deckManager.deck.Remove(this.gameObject); // removes it from deck, puts into discarded deck
             deckManager.discardedCards.Add(this.gameObject);
 
@@ -99,14 +101,20 @@ public class Card : MonoBehaviour
             DeckManager deckManagerToUseForPlayer = handManager.cardInUse.deckManager;
             GameObject cardInHand = handManager.cardInUse.gameObject;
 
+            
+
             deckManagerToUseForPlayer.deck.Remove(cardInHand);
             deckManagerToUseForPlayer.discardedCards.Add(cardInHand);
 
-            deckManagerToUseForPlayer.nextCardsToPlay.Add(deckManager.deck[13]);
+            deckManagerToUseForPlayer.nextCardsToPlay.Add(deckManagerToUseForPlayer.deck[13]);
             deckManager.deck.Remove(deckManagerToUseForPlayer.deck[13]);
 
             cardInHand.transform.parent = deckManagerToUseForPlayer.deckPosition.transform;
             cardInHand.transform.position = deckManagerToUseForPlayer.deckPosition.position;
+
+
+            
+          
 
 
 
