@@ -28,6 +28,8 @@ public class DeckManager : MonoBehaviour
     [SerializeField] GameObject[] row; // holds the rows
 
     public List<GameObject> discardedCards; // holds cards that have been taken out of play, will re - enter after a shuffle
+
+    public List<GameObject> nextCardsToPlay; // makes a list of the next cards that will come in to play
     private void Start()
     {
         for (int i = 0; i < playingCardPosition.Length; i++) // deactivates the playing cards positions visuals (alll the default 2 on screen)

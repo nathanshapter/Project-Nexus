@@ -1029,6 +1029,7 @@ MonoBehaviour:
   - {fileID: 1829925704}
   - {fileID: 1580847856}
   discardedCards: []
+  nextCardsToPlay: []
 --- !u!4 &627630472
 Transform:
   m_ObjectHideFlags: 0
@@ -2574,6 +2575,7 @@ MonoBehaviour:
   - {fileID: 1866489939}
   - {fileID: 958947716}
   discardedCards: []
+  nextCardsToPlay: []
 --- !u!4 &1856562608
 Transform:
   m_ObjectHideFlags: 0
@@ -2605,9 +2607,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PCHand: {fileID: 958947716}
   cardsInPCHand: []
-  opponentRow:
+  playerRow:
   - {fileID: 298213897}
-  cardsInOpponentFirstRow: []
+  - {fileID: 1183700379}
+  - {fileID: 1699349523}
+  - {fileID: 1829925704}
+  cardsInPlayerFirstRow: []
 --- !u!1 &1866489939
 GameObject:
   m_ObjectHideFlags: 0

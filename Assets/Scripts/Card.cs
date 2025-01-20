@@ -23,15 +23,19 @@ public class Card : MonoBehaviour
         spriteRenderer.sprite = sprites[Random.Range(0, sprites.Length)]; // chooses a random suit for the card
         handManager = FindFirstObjectByType<HandManager>();
         
-        
+        deckManager = GetComponentInParent<DeckManager>();
+
+        if(deckManager.GetComponent<PCBrain>() != null)
+        {
+            isPlayerCard = false;
+        }
     }
 
 
 
     private void OnMouseDown()
     {
-        deckManager = GetComponentInParent<DeckManager>(); // easiest to put the deck manager here, as they spawn at different times, doesnt need deckmanager before it is clicked
-
+        
 
 
         Debug.Log(name);
@@ -63,6 +67,10 @@ public class Card : MonoBehaviour
             {
                CardDefeated();
             }
+            else if(handManager.currentValue == 2 && gameObject.GetComponent<Card>().cardValue == 14)
+            {
+                CardDefeated();
+            }
 
 
         }    
@@ -73,21 +81,34 @@ public class Card : MonoBehaviour
         {
             deckManager.deck.Remove(this.gameObject); // removes it from deck, puts into discarded deck
             deckManager.discardedCards.Add(this.gameObject);
-            GameObject nextCard = (deckManager.deck[13]); // always plays the card in position 13 as that is the next card
+
+            
+            deckManager.nextCardsToPlay.Add(deckManager.deck[13]); // always plays the card in position 13 as that is the next card
+            deckManager.deck.Remove(deckManager.deck[13]);
+
             this.gameObject.transform.position = deckManager.deckPosition.position; // moves it out of view
             this.gameObject.transform.parent = deckManager.deckPosition; // gives it its new parent
 
 
             // at end of players turn, they will draw their new cards
-            print("next card to be played from PC" + nextCard.name);
+           
 
 
             // player card logic
 
-          
+            DeckManager deckManagerToUseForPlayer = handManager.cardInUse.deckManager;
+            GameObject cardInHand = handManager.cardInUse.gameObject;
 
-            handManager.cardInUse.deckManager.deck.Remove(handManager.cardInUse.gameObject);
-            handManager.cardInUse.deckManager.discardedCards.Add(handManager.cardInUse.gameObject);
+            deckManagerToUseForPlayer.deck.Remove(cardInHand);
+            deckManagerToUseForPlayer.discardedCards.Add(cardInHand);
+
+            deckManagerToUseForPlayer.nextCardsToPlay.Add(deckManager.deck[13]);
+            deckManager.deck.Remove(deckManagerToUseForPlayer.deck[13]);
+
+            cardInHand.transform.parent = deckManagerToUseForPlayer.deckPosition.transform;
+            cardInHand.transform.position = deckManagerToUseForPlayer.deckPosition.position;
+
+
 
 
         } // not owrking for player card because it is not being clicked on
@@ -98,8 +119,32 @@ public class Card : MonoBehaviour
     }
     private void CardDefeated() // if card used has bigger value than other card
     {
-        this.gameObject.SetActive(false);
-        handManager.cardInUse.gameObject.SetActive(false);
+        //  this.gameObject.SetActive(false);
+        //  handManager.cardInUse.gameObject.SetActive(false);
+
+        deckManager.deck.Remove(this.gameObject); // removes it from deck, puts into discarded deck
+        deckManager.discardedCards.Add(this.gameObject);
+
+        deckManager.nextCardsToPlay.Add(deckManager.deck[13]); // always plays the card in position 13 as that is the next card
+        deckManager.deck.Remove(deckManager.deck[13]);
+
+
+        this.gameObject.transform.position = deckManager.deckPosition.position; // moves it out of view
+        this.gameObject.transform.parent = deckManager.deckPosition; // gives it its new parent
+
+
+
+        DeckManager deckManagerToUseForPlayer = handManager.cardInUse.deckManager;
+        GameObject cardInHand = handManager.cardInUse.gameObject;
+
+        deckManagerToUseForPlayer.deck.Remove(cardInHand);
+        deckManagerToUseForPlayer.discardedCards.Add(cardInHand);
+
+        deckManagerToUseForPlayer.nextCardsToPlay.Add(deckManager.deck[13]);
+        deckManager.deck.Remove(deckManagerToUseForPlayer.deck[13]);
+
+        cardInHand.transform.parent = deckManagerToUseForPlayer.deckPosition.transform;
+        cardInHand.transform.position = deckManagerToUseForPlayer.deckPosition.position;
 
         print("card defeated, your turn is over");
 

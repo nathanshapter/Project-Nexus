@@ -10,7 +10,7 @@ public class PCBrain : MonoBehaviour // script is used to take care of all of th
 
     [SerializeField] GameObject[] playerRow; // references the rows of the player
 
-    [SerializeField] Card[] cardsInPlayerFirstRow; // references the cards in the first row of the player
+    [SerializeField] Card[] cardsInPlayerFirstRow; // references the cards in the first row of the player, set in inspector
 
    
 
@@ -101,8 +101,30 @@ public class PCBrain : MonoBehaviour // script is used to take care of all of th
     }
     void NeutraliseCards(Card playerCard, Card PCCard, bool turnOver) // turn continues if cards are equal, if not, it will end, bool used to indicate turn over or not
     {
-        playerCard.gameObject.SetActive(false);
-        PCCard.gameObject.SetActive(false);
+
+        PCCard.deckManager.deck.Remove(this.gameObject);
+        PCCard.deckManager.discardedCards.Add(this.gameObject);
+
+        PCCard.deckManager.nextCardsToPlay.Add(deckManager.deck[13]);
+        PCCard.deckManager.deck.Remove(deckManager.deck[13]);
+
+        PCCard.gameObject.transform.position = PCCard.deckManager.deckPosition.position;
+        PCCard.gameObject.transform.parent = PCCard.deckManager.deckPosition;
+
+
+
+
+        playerCard.deckManager.deck.Remove(this.gameObject);
+        playerCard.deckManager.discardedCards.Add(this.gameObject);
+
+        playerCard.deckManager.nextCardsToPlay.Add(deckManager.deck[13]);
+        playerCard.deckManager.deck.Remove(deckManager.deck[13]);
+
+        playerCard.transform.parent = playerCard.deckManager.deckPosition.transform;
+        playerCard.transform.position = playerCard.deckManager.deckPosition.position;
+
+     //   playerCard.gameObject.SetActive(false);
+     //   PCCard.gameObject.SetActive(false);
         if(turnOver)
         {
             print("PC turn is over");
