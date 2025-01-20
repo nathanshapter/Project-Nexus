@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PCBrain : MonoBehaviour // script is used to take care of all of the information the PC has
@@ -6,7 +7,7 @@ public class PCBrain : MonoBehaviour // script is used to take care of all of th
     DeckManager deckManager; 
     [SerializeField] GameObject PCHand; // holds the PC hand
 
-    [SerializeField] Card[] cardsInPCHand; // references the cards in PC hand
+    [SerializeField] List<Card> cardsInPCHand; // references the cards in PC hand
 
     [SerializeField] GameObject[] playerRow; // references the rows of the player
 
@@ -23,7 +24,8 @@ public class PCBrain : MonoBehaviour // script is used to take care of all of th
         print("pc turn has started");
 
         // gets cards in computer hand and player first row
-        cardsInPCHand = PCHand.GetComponentsInChildren<Card>();
+        cardsInPCHand = new List<Card>(PCHand.GetComponentsInChildren<Card>());
+
         cardsInPlayerFirstRow = playerRow[0].GetComponentsInChildren<Card>();
 
 
@@ -38,28 +40,38 @@ public class PCBrain : MonoBehaviour // script is used to take care of all of th
 
     private void FindMatches() // looks for cards that it can equalise
     {
+        List<Card> cardsToRemove = new List<Card>(); // Temporary list to store cards to be removed
+
         foreach (Card pcCard in cardsInPCHand)
         {
             bool matchFound = false;
 
-            foreach (Card playerCard in cardsInPlayerFirstRow) // for every card in PC hand, see if it can equalise, if it can, do that
+            foreach (Card playerCard in cardsInPlayerFirstRow) // For every card in PC hand, see if it can equalise, if it can, do that
             {
                 if (pcCard.cardValue == playerCard.cardValue)
                 {
                     print($"Match found! {pcCard.name} matches {playerCard.name}");
+
                     NeutraliseCards(playerCard, pcCard, false);
                     matchFound = true;
-                    
+
+                    // Add the card to the removal list instead of removing it directly
+                    cardsToRemove.Add(pcCard);
+                    break; // Exit the inner loop as the card has been neutralized
                 }
-              
             }
 
-            // If no match is found for this PC card, you can look for larger cards or handle other logic
-            if (!matchFound )
+            // If no match is found for this PC card, handle other logic
+            if (!matchFound)
             {
                 print($"No match found for {pcCard.name}. Looking for a larger card.");
-               
             }
+        }
+
+        // Remove cards marked for removal after the iteration is complete
+        foreach (Card card in cardsToRemove)
+        {
+            cardsInPCHand.Remove(card);
         }
     }
 
@@ -103,7 +115,7 @@ public class PCBrain : MonoBehaviour // script is used to take care of all of th
     {
         // if the card has already been used to equalise or as a larger card, return
 
-        if (PCCard.CardUsedByPC)
+        if (PCCard.CardUsedByPC) 
             return;
 
         PCCard.CardUsedByPC = true;
