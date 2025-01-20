@@ -9,12 +9,17 @@ public class Card : MonoBehaviour
     public bool isPlayerCard = true;
     private HandManager handManager;
 
+    
+
+    
     private void Start()
     {
      spriteRenderer = GetComponent<SpriteRenderer>();
         
         spriteRenderer.sprite = sprites[Random.Range(0, sprites.Length)];
         handManager = FindFirstObjectByType<HandManager>();
+        
+        
     }
 
 
@@ -27,17 +32,37 @@ public class Card : MonoBehaviour
         if (gameObject.GetComponent<Card>().isPlayerCard)
         {
             Card currentCard = gameObject.GetComponent<Card>();
-
+            handManager.cardInUse = currentCard;
 
             if (currentCard.isInHand)
             {
                 handManager.ChangeCurrentValue(cardValue);
             }
         }
-        if (!gameObject.GetComponent<Card>().isPlayerCard && handManager.currentValue == gameObject.GetComponent<Card>().cardValue) 
+
+       
+
+        if (!gameObject.GetComponent<Card>().isPlayerCard   ) 
         {
-            print("cards neutralised");
+
+            if(handManager.currentValue == gameObject.GetComponent<Card>().cardValue)
+            {
+                CardNeutralised();
+            }
+            if (handManager.currentValue > gameObject.GetComponent<Card>().cardValue)
+            {
+               CardDefeated();
+            }
+
+
+
+
+
+
+
+
         }
+       
 
 
 
@@ -46,16 +71,31 @@ public class Card : MonoBehaviour
     }
     private void CardNeutralised() // if cards have same value
     {
+        // these need to not be set to inactive, but instead to paly the next card
 
+        this.gameObject.SetActive(false);
+        handManager.cardInUse.gameObject.SetActive(false);
+
+
+        print("cards neutralised");
     }
     private void CardDefeated() // if card used has bigger value than other card
     {
+        this.gameObject.SetActive(false);
+        handManager.cardInUse.gameObject.SetActive(false);
 
+        print("card defeated, your turn is over");
+
+        GameManager.instance.FlipTurn();
     }
     private void CardDefense() // if card used to defend
     {
 
     }
+
+ 
+
+  
 }
 
 

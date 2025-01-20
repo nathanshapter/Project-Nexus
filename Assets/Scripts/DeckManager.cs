@@ -1,6 +1,7 @@
 using Mono.Cecil;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DeckManager : MonoBehaviour
@@ -24,6 +25,7 @@ public class DeckManager : MonoBehaviour
     [SerializeField] Sprite backOfCardSprite;
 
     [SerializeField] float timeInBetweenCard = 0.3f;
+
 
     private void Start()
     {
@@ -84,13 +86,18 @@ public class DeckManager : MonoBehaviour
 
 
             deck[i].transform.position = playingCardPosition[i].transform.position;
-        }
-       
 
+           
+
+        }
+
+        
        
        
 
      
     }
+
+  
 }
 
