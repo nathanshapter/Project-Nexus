@@ -1,17 +1,16 @@
 using UnityEngine;
 
-public class PCBrain : MonoBehaviour
+public class PCBrain : MonoBehaviour // script is used to take care of all of the information the PC has
 {
 
+    DeckManager deckManager; 
+    [SerializeField] GameObject PCHand; // holds the PC hand
 
-    DeckManager deckManager;
-    [SerializeField] GameObject PCHand;
+    [SerializeField] Card[] cardsInPCHand; // references the cards in PC hand
 
-    [SerializeField] Card[] cardsInPCHand;
+    [SerializeField] GameObject[] playerRow; // references the rows of the player
 
-    [SerializeField] GameObject[] opponentRow;
-
-    [SerializeField] Card[] cardsInOpponentFirstRow;
+    [SerializeField] Card[] cardsInPlayerFirstRow; // references the cards in the first row of the player
 
    
 
@@ -22,9 +21,10 @@ public class PCBrain : MonoBehaviour
     public void ProcessPCTurn()
     {
         print("pc turn has started");
-        cardsInPCHand = PCHand.GetComponentsInChildren<Card>();
 
-        cardsInOpponentFirstRow = opponentRow[0].GetComponentsInChildren<Card>();
+        // gets cards in computer hand and player first row
+        cardsInPCHand = PCHand.GetComponentsInChildren<Card>();
+        cardsInPlayerFirstRow = playerRow[0].GetComponentsInChildren<Card>();
 
 
 
@@ -36,13 +36,13 @@ public class PCBrain : MonoBehaviour
 
     }
 
-    private void FindMatches()
+    private void FindMatches() // looks for cards that it can equalise
     {
         foreach (Card pcCard in cardsInPCHand)
         {
             bool matchFound = false;
 
-            foreach (Card playerCard in cardsInOpponentFirstRow)
+            foreach (Card playerCard in cardsInPlayerFirstRow) // for every card in PC hand, see if it can equalise, if it can, do that
             {
                 if (pcCard.cardValue == playerCard.cardValue)
                 {
@@ -63,17 +63,18 @@ public class PCBrain : MonoBehaviour
         }
     }
 
-    void LookForLargerCard()
+    void LookForLargerCard() // looks for cards that it can defeat by virture of having a larger card
+        // the goal is to have it randomised with values. if they are on the last row the the pc is more likely to protect than to attack
     {
      
 
-        foreach (Card pcCard in cardsInPCHand)
+        foreach (Card pcCard in cardsInPCHand) 
         {
             bool foundStrongerCard = false;
 
-            foreach (Card playerCard in cardsInOpponentFirstRow)
+            foreach (Card playerCard in cardsInPlayerFirstRow) // for every card in PC hand, try and see if it has a larger card than palyer
             {
-                if (pcCard.cardValue > playerCard.cardValue)
+                if (pcCard.cardValue > playerCard.cardValue) // once it has found a stronger card it will use it to destroy both cards
                 {
                     print($"higher card found {pcCard.name} is bigger than {playerCard.name}");
                     NeutraliseCards(playerCard, pcCard, true);
@@ -81,9 +82,11 @@ public class PCBrain : MonoBehaviour
                     return;
 
                 }
-                if(!foundStrongerCard)
+                if(!foundStrongerCard) // if it does not have a stronger card then it will go to defend
                 {
                     print("no larger card found");
+
+                    LookForCardToDefendWith();
                 }
             }
         }
@@ -91,7 +94,12 @@ public class PCBrain : MonoBehaviour
        
 
     }
-    void NeutraliseCards(Card playerCard, Card PCCard, bool turnOver) // turn continues if cards are equal, if not, it will end
+
+    void LookForCardToDefendWith()
+    {
+        // to be implemented
+    }
+    void NeutraliseCards(Card playerCard, Card PCCard, bool turnOver) // turn continues if cards are equal, if not, it will end, bool used to indicate turn over or not
     {
         playerCard.gameObject.SetActive(false);
         PCCard.gameObject.SetActive(false);
