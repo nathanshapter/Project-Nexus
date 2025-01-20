@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
         if (!playerTurn)
         {
             print("computers turn now");
-            npc.PCTurnStarted();
+            npc.ProcessPCTurn();
         }
 
 

@@ -11,12 +11,12 @@ public class DeckManager : MonoBehaviour
 
    [SerializeField] GameObject[] cardsToPickFrom;
 
-  [SerializeField]  List<GameObject> deck;
+  public  List<GameObject> deck;
 
     private int numberOfCardsInDeck = 26;
 
 
-    [SerializeField] Transform deckPosition;
+    public Transform deckPosition;
 
     [SerializeField] Transform[] playingCardPosition;
 

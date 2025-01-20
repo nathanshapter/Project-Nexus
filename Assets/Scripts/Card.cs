@@ -9,6 +9,8 @@ public class Card : MonoBehaviour
     public bool isPlayerCard = true;
     private HandManager handManager;
 
+   [SerializeField] DeckManager deckManager;
+
     
 
     
@@ -26,6 +28,8 @@ public class Card : MonoBehaviour
 
     private void OnMouseDown()
     {
+        deckManager = GetComponentInParent<DeckManager>();
+
 
         Debug.Log(name);
 
@@ -65,16 +69,27 @@ public class Card : MonoBehaviour
        
 
 
-
+       
 
 
     }
     private void CardNeutralised() // if cards have same value
     {
-        // these need to not be set to inactive, but instead to paly the next card
+        
 
-        this.gameObject.SetActive(false);
-        handManager.cardInUse.gameObject.SetActive(false);
+        // PC card
+       
+        deckManager.deck.Remove(this.gameObject);
+        deckManager.deck.Add(this.gameObject);
+        GameObject nextCard = (deckManager.deck[13]); // always plays the card in position 13 as that is the next card
+
+        print("next card to be played " +  nextCard.name);
+
+       // this.gameObject.SetActive(false); // this is PC card
+       this.gameObject.transform.position = deckManager.deckPosition.position;
+      
+        
+        handManager.cardInUse.gameObject.SetActive(false); // player card
 
 
         print("cards neutralised");
