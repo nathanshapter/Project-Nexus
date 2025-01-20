@@ -941,6 +941,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c12ddc8c03e67324c9ac58e9cdd80d63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerDeckManager: {fileID: 627630471}
+  computerDeckManager: {fileID: 1856562607}
   playerTurn: 1
 --- !u!4 &624589524
 Transform:
@@ -1020,6 +1022,12 @@ MonoBehaviour:
   - {fileID: 2041601924}
   backOfCardSprite: {fileID: 0}
   timeInBetweenCard: 0.3
+  row:
+  - {fileID: 298213897}
+  - {fileID: 1183700379}
+  - {fileID: 1699349523}
+  - {fileID: 1829925704}
+  - {fileID: 1580847856}
 --- !u!4 &627630472
 Transform:
   m_ObjectHideFlags: 0
@@ -2503,6 +2511,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1856562608}
   - component: {fileID: 1856562607}
+  - component: {fileID: 1856562609}
   m_Layer: 0
   m_Name: DeckManager (Computer)
   m_TagString: Untagged
@@ -2556,6 +2565,12 @@ MonoBehaviour:
   - {fileID: 1463880443}
   backOfCardSprite: {fileID: -4094352041413551053, guid: 39b6c04831b4e6242bbcd91438a7c9af, type: 3}
   timeInBetweenCard: 0.3
+  row:
+  - {fileID: 1835182843}
+  - {fileID: 384364338}
+  - {fileID: 1164712980}
+  - {fileID: 1866489939}
+  - {fileID: 958947716}
 --- !u!4 &1856562608
 Transform:
   m_ObjectHideFlags: 0
@@ -2573,6 +2588,23 @@ Transform:
   - {fileID: 1248414135}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1856562609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1856562606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4f158f22b83baa47a585ebe3403e378, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PCHand: {fileID: 958947716}
+  cardsInPCHand: []
+  opponentRow:
+  - {fileID: 298213897}
+  cardsInOpponentFirstRow: []
 --- !u!1 &1866489939
 GameObject:
   m_ObjectHideFlags: 0
