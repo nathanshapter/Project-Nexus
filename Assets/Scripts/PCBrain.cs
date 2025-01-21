@@ -52,7 +52,10 @@ public class PCBrain : MonoBehaviour // script is used to take care of all of th
                 {
                     print($"Match found! {pcCard.name} matches {playerCard.name}");
 
-                    NeutraliseCards(playerCard, pcCard, false);
+
+                   // pcCard.CardNeutralised();
+
+                    ProcessCardRemoval(playerCard, pcCard, false);
                     matchFound = true;
 
                     // Add the card to the removal list instead of removing it directly
@@ -64,7 +67,7 @@ public class PCBrain : MonoBehaviour // script is used to take care of all of th
             // If no match is found for this PC card, handle other logic
             if (!matchFound)
             {
-                print($"No match found for {pcCard.name}. Looking for a larger card.");
+                print($"No match found for {pcCard.name}");
             }
         }
 
@@ -89,14 +92,14 @@ public class PCBrain : MonoBehaviour // script is used to take care of all of th
                 if (pcCard.cardValue > playerCard.cardValue) // once it has found a stronger card it will use it to destroy both cards
                 {
                     print($"higher card found {pcCard.name} is bigger than {playerCard.name}");
-                    NeutraliseCards(playerCard, pcCard, true);
+                    ProcessCardRemoval(playerCard, pcCard, true);
                     foundStrongerCard = true;
                     return;
 
                 }
                 if(!foundStrongerCard) // if it does not have a stronger card then it will go to defend
                 {
-                    print("no larger card found");
+                    print($"no larger card found for {pcCard.name}");
 
                     LookForCardToDefendWith();
                 }
@@ -111,12 +114,14 @@ public class PCBrain : MonoBehaviour // script is used to take care of all of th
     {
         // to be implemented
     }
-    void NeutraliseCards(Card playerCard, Card PCCard, bool turnOver) // turn continues if cards are equal, if not, it will end, bool used to indicate turn over or not
+    void ProcessCardRemoval(Card playerCard, Card PCCard, bool turnOver) // turn continues if cards are equal, if not, it will end, bool used to indicate turn over or not
     {
         // if the card has already been used to equalise or as a larger card, return
 
         if (PCCard.CardUsedByPC) 
             return;
+
+
 
         PCCard.CardUsedByPC = true;
 
@@ -145,7 +150,8 @@ public class PCBrain : MonoBehaviour // script is used to take care of all of th
      //   PCCard.gameObject.SetActive(false);
         if(turnOver)
         {
-            print("PC turn is over");
+            GameManager.instance.PlayersTakeNextCards(deckManager);
+            GameManager.instance.PlayersTakeNextCards(playerCard.deckManager);
         }
 
 

@@ -49,4 +49,12 @@ public class GameManager : MonoBehaviour
 
         
     }
+
+    public void PlayersTakeNextCards(DeckManager deckManager)
+    {
+        foreach (var item in deckManager.nextCardsToPlay)
+        {
+            print(item.name);
+        }
+    }
 }

@@ -58,10 +58,14 @@ public class Card : MonoBehaviour
                 // if the card selected cardvalue is equal to that of the opponents card, neutralise them
                 CardNeutralised();
             }
-            if (handManager.currentValue > gameObject.GetComponent<Card>().cardValue) 
+            else if (handManager.currentValue > gameObject.GetComponent<Card>().cardValue) 
             {
                 // if selected card value is higher than opponents card, defeat it
                 CardDefeated();
+            }
+            else if(handManager.currentValue < gameObject.GetComponent<Card>().cardValue)
+            { // if selected card value is lower than opponents card, nothing can be done
+                print($"card value {handManager.currentValue} is lower than {gameObject.GetComponent<Card>().cardValue}");
             }
             else if (handManager.currentValue == 2 && gameObject.GetComponent<Card>().cardValue == 14)
             {
@@ -105,7 +109,7 @@ public class Card : MonoBehaviour
         Debug.Log($"Card Neutralised{ deckManager.name + cardGO.name} by type of {removalType}");
     }
 
-    private void CardNeutralised() // if cards have same value
+    public void CardNeutralised() // if cards have same value
     {
         string type = "Neutralised";
         if (!isPlayerCard) // only works if selected card of player can interact with enemy card by being equal
@@ -123,7 +127,7 @@ public class Card : MonoBehaviour
 
    
   
-    private void CardDefeated() // if card used has bigger value than other card
+    public void CardDefeated() // if card used has bigger value than other card
     {
         string type = "Defeated";
         ProcessCardRemoval(deckManager, this.gameObject, type);
