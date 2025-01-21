@@ -48,14 +48,15 @@ public class PCBrain : MonoBehaviour // script is used to take care of all of th
 
             foreach (Card playerCard in cardsInPlayerFirstRow) // For every card in PC hand, see if it can equalise, if it can, do that
             {
-                if (pcCard.cardValue == playerCard.cardValue)
+                if (pcCard.cardValue == playerCard.cardValue && !playerCard.cardRemovedByPC)
                 {
                     print($"Match found! {pcCard.name} matches {playerCard.name}");
 
-
+                    playerCard.cardRemovedByPC = true;
                    // pcCard.CardNeutralised();
 
                     ProcessCardRemoval(playerCard, pcCard, false);
+
                     matchFound = true;
 
                     // Add the card to the removal list instead of removing it directly
@@ -89,9 +90,11 @@ public class PCBrain : MonoBehaviour // script is used to take care of all of th
 
             foreach (Card playerCard in cardsInPlayerFirstRow) // for every card in PC hand, try and see if it has a larger card than palyer
             {
-                if (pcCard.cardValue > playerCard.cardValue) // once it has found a stronger card it will use it to destroy both cards
+                if (pcCard.cardValue > playerCard.cardValue && !playerCard.cardRemovedByPC) // once it has found a stronger card it will use it to destroy both cards
                 {
+                    playerCard.cardRemovedByPC = true;
                     print($"higher card found {pcCard.name} is bigger than {playerCard.name}");
+
                     ProcessCardRemoval(playerCard, pcCard, true);
                     foundStrongerCard = true;
                     return;
@@ -110,6 +113,12 @@ public class PCBrain : MonoBehaviour // script is used to take care of all of th
 
     }
 
+    void CardNeutralised()
+    {
+        string type = "Neutralised";
+
+
+    }
     void LookForCardToDefendWith()
     {
         // to be implemented
@@ -146,12 +155,12 @@ public class PCBrain : MonoBehaviour // script is used to take care of all of th
         playerCard.transform.parent = playerCard.deckManager.deckPosition.transform;
         playerCard.transform.position = playerCard.deckManager.deckPosition.position;
 
-     //   playerCard.gameObject.SetActive(false);
-     //   PCCard.gameObject.SetActive(false);
+  
         if(turnOver)
         {
             GameManager.instance.PlayersTakeNextCards(deckManager);
             GameManager.instance.PlayersTakeNextCards(playerCard.deckManager);
+            print("it is now the players turn");
         }
 
 

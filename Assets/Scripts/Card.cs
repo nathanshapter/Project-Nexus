@@ -21,6 +21,8 @@ public class Card : MonoBehaviour
 
     public int rowIndex, playerRowIndex; // index of the row where the card was placed
     public Vector3 previousPosition, playerCardPreviousPosition; // world space position of the card before neutralised
+
+    public bool cardRemovedByPC = false; // when cards are put back into play this needs to be set to false. will cause issues if not
     private void Start()
     {
      spriteRenderer = GetComponent<SpriteRenderer>();
@@ -67,7 +69,7 @@ public class Card : MonoBehaviour
             { // if selected card value is lower than opponents card, nothing can be done
                 print($"card value {handManager.currentValue} is lower than {gameObject.GetComponent<Card>().cardValue}");
             }
-            else if (handManager.currentValue == 2 && gameObject.GetComponent<Card>().cardValue == 14)
+            if (handManager.currentValue == 2 && gameObject.GetComponent<Card>().cardValue == 14)
             {
                 // same as above except it allows 2 to take out an ACE card
                 CardDefeated();

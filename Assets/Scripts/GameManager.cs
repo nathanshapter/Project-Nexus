@@ -54,7 +54,11 @@ public class GameManager : MonoBehaviour
     {
         foreach (var item in deckManager.nextCardsToPlay)
         {
-            print(item.name);
+            print($"Card in reserve for {deckManager.name} + {item.name}");
         }
+        // when the card is taking out of the hand, the next card needs to be put into the player hand row. the previous card needs to have
+        // its vector 3 saved. once the card is ready to be placed there it needs only to access the list of vector3 to be replaced in order
+
+
     }
 }
