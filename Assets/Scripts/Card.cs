@@ -15,6 +15,8 @@ public class Card : MonoBehaviour
 
     public bool CardUsedByPC = false;
 
+    private int nextCardID = 13; // as there are always 14 cards in play, this ensures the next card will be played referencing the array
+
 
 
     public int rowIndex, playerRowIndex; // index of the row where the card was placed
@@ -38,110 +40,83 @@ public class Card : MonoBehaviour
 
     private void OnMouseDown()
     {
-        
+        Debug.Log($"Card selected is {name}");
 
 
-        Debug.Log(name);
+        ProcessPlayerCard();
+        ProcessNonPlayerCard();
+    }
 
-        if (gameObject.GetComponent<Card>().isPlayerCard) // selets the current card as the one to loo kat
+    private void ProcessNonPlayerCard()
+    {
+        // the point of this method is for the player to select the opponents cards after having chosen their own card to work with
+        if (!gameObject.GetComponent<Card>().isPlayerCard)
+        {
+
+            if (handManager.currentValue == gameObject.GetComponent<Card>().cardValue) 
+            {
+                // if the card selected cardvalue is equal to that of the opponents card, neutralise them
+                CardNeutralised();
+            }
+            if (handManager.currentValue > gameObject.GetComponent<Card>().cardValue) 
+            {
+                // if selected card value is higher than opponents card, defeat it
+                CardDefeated();
+            }
+            else if (handManager.currentValue == 2 && gameObject.GetComponent<Card>().cardValue == 14)
+            {
+                // same as above except it allows 2 to take out an ACE card
+                CardDefeated();
+            }
+        }
+    }
+
+    private void ProcessPlayerCard()
+    {
+        if (gameObject.GetComponent<Card>().isPlayerCard) // selets the current card as the one to consider when touching opponent card
         {
             Card currentCard = gameObject.GetComponent<Card>();
             handManager.cardInUse = currentCard;
-            
 
-            if (currentCard.isInHand)  // if the card is in the players hand then it is the card used for the next action
+
+            if (currentCard.isInHand)
+            // if the card is in the players hand then it is the card used for the next action
+            // stops the player from selecting a defensive card
             {
                 handManager.ChangeCurrentValue(cardValue);
             }
         }
-
-       
-
-        if (!gameObject.GetComponent<Card>().isPlayerCard   )  
-        {
-
-            if(handManager.currentValue == gameObject.GetComponent<Card>().cardValue) // if the card selected cardvalue is equal to that of the 
-                //opponents card, neutralise them
-            {
-                CardNeutralised();
-            }
-            if (handManager.currentValue > gameObject.GetComponent<Card>().cardValue) // if selected card value is higher than opponents card,
-                // defeat it
-            {
-               CardDefeated();
-            }
-            else if(handManager.currentValue == 2 && gameObject.GetComponent<Card>().cardValue == 14)
-            {
-                CardDefeated();
-            }
-
-
-        }    
     }
-    private void CardNeutralised() // if cards have same value
-    {
 
-        
+    void ProcessNeutralisation(DeckManager deckManager, GameObject cardGO)
+    {
+        //remove it from the playable deck, and put it into the discarded cards pile
+        deckManager.deck.Remove(cardGO);
+        deckManager.discardedCards.Add(cardGO);
+
+        //remove the next card to play, and putting it into the next card to play 
+        deckManager.deck.Remove(deckManager.deck[nextCardID]);
+        deckManager.nextCardsToPlay.Add(deckManager.deck[nextCardID]);
+
+        // removes the card off the playing field by position, and sets its parent to the deck
+        cardGO.transform.position =deckManager.deckPosition.position;
+        cardGO.transform.parent = deckManager.deckPosition;
+
+    }
+
+    private void CardNeutralised() // if cards have same value
+    {        
 
         if (!isPlayerCard) // only works if selected card of player can interact with enemy card by being equal
         {
-           
+         
 
-            deckManager.deck.Remove(this.gameObject); // removes it from deck, puts into discarded deck
-            deckManager.discardedCards.Add(this.gameObject);
-
-            
-            deckManager.nextCardsToPlay.Add(deckManager.deck[13]); // always plays the card in position 13 as that is the next card
-            deckManager.deck.Remove(deckManager.deck[13]);
-
-            this.gameObject.transform.position = deckManager.deckPosition.position; // moves it out of view
-            this.gameObject.transform.parent = deckManager.deckPosition; // gives it its new parent
-
-
-            // at end of players turn, they will draw their new cards
-           
-
-
-            // player card logic
+            ProcessNeutralisation(deckManager, this.gameObject);
 
             DeckManager deckManagerToUseForPlayer = handManager.cardInUse.deckManager;
             GameObject cardInHand = handManager.cardInUse.gameObject;
 
-           
-
-            deckManagerToUseForPlayer.deck.Remove(cardInHand);
-            deckManagerToUseForPlayer.discardedCards.Add(cardInHand);
-
-            deckManagerToUseForPlayer.nextCardsToPlay.Add(deckManagerToUseForPlayer.deck[13]);
-            deckManager.deck.Remove(deckManagerToUseForPlayer.deck[13]);
-
-            cardInHand.transform.parent = deckManagerToUseForPlayer.deckPosition.transform;
-            cardInHand.transform.position = deckManagerToUseForPlayer.deckPosition.position;
-
-
-           
-            
-         // if(deckManager.nextCardsToPlay.Count > 0) // this attempts to replace cards
-          /*  {               
-
-                
-
-                print("working on replacing cards");
-                GameObject nextCard = deckManager.nextCardsToPlay[0];
-                deckManager.nextCardsToPlay.RemoveAt(0);
-
-                nextCard.transform.position = this.previousPosition;
-                nextCard.transform.parent = deckManager.row[rowIndex].transform;
-                nextCard.GetComponent<Card>().rowIndex = rowIndex;
-
-
-                GameObject nextPlayerCard = deckManagerToUseForPlayer.nextCardsToPlay [0];
-                deckManagerToUseForPlayer.nextCardsToPlay.RemoveAt (0);
-
-                nextPlayerCard.transform.position= this.playerCardPreviousPosition;
-                nextPlayerCard.transform.parent = deckManagerToUseForPlayer.row[playerRowIndex].transform;
-                nextPlayerCard.GetComponent<Card>().rowIndex = playerRowIndex;
-            }*/
+            ProcessNeutralisation(deckManagerToUseForPlayer, cardInHand);       
 
 
 
@@ -152,6 +127,9 @@ public class Card : MonoBehaviour
 
         print("cards neutralised");
     }
+
+
+  
     private void CardDefeated() // if card used has bigger value than other card
     {
         //  this.gameObject.SetActive(false);
@@ -160,8 +138,8 @@ public class Card : MonoBehaviour
         deckManager.deck.Remove(this.gameObject); // removes it from deck, puts into discarded deck
         deckManager.discardedCards.Add(this.gameObject);
 
-        deckManager.nextCardsToPlay.Add(deckManager.deck[13]); // always plays the card in position 13 as that is the next card
-        deckManager.deck.Remove(deckManager.deck[13]);
+        deckManager.nextCardsToPlay.Add(deckManager.deck[nextCardID]); // always plays the card in position 13 as that is the next card
+        deckManager.deck.Remove(deckManager.deck[nextCardID]);
 
 
         this.gameObject.transform.position = deckManager.deckPosition.position; // moves it out of view
@@ -175,8 +153,8 @@ public class Card : MonoBehaviour
         deckManagerToUseForPlayer.deck.Remove(cardInHand);
         deckManagerToUseForPlayer.discardedCards.Add(cardInHand);
 
-        deckManagerToUseForPlayer.nextCardsToPlay.Add(deckManager.deck[13]);
-        deckManager.deck.Remove(deckManagerToUseForPlayer.deck[13]);
+        deckManagerToUseForPlayer.nextCardsToPlay.Add(deckManager.deck[nextCardID]);
+        deckManager.deck.Remove(deckManagerToUseForPlayer.deck[nextCardID]);
 
         cardInHand.transform.parent = deckManagerToUseForPlayer.deckPosition.transform;
         cardInHand.transform.position = deckManagerToUseForPlayer.deckPosition.position;
