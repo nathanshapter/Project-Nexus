@@ -88,7 +88,7 @@ public class Card : MonoBehaviour
         }
     }
 
-    void ProcessNeutralisation(DeckManager deckManager, GameObject cardGO)
+    void ProcessCardRemoval(DeckManager deckManager, GameObject cardGO, string removalType)
     {
         //remove it from the playable deck, and put it into the discarded cards pile
         deckManager.deck.Remove(cardGO);
@@ -102,62 +102,38 @@ public class Card : MonoBehaviour
         cardGO.transform.position =deckManager.deckPosition.position;
         cardGO.transform.parent = deckManager.deckPosition;
 
+        Debug.Log($"Card Neutralised{ deckManager.name + cardGO.name} by type of {removalType}");
     }
 
     private void CardNeutralised() // if cards have same value
-    {        
-
+    {
+        string type = "Neutralised";
         if (!isPlayerCard) // only works if selected card of player can interact with enemy card by being equal
-        {
-         
+        {         
 
-            ProcessNeutralisation(deckManager, this.gameObject);
+            ProcessCardRemoval(deckManager, this.gameObject, type);
 
             DeckManager deckManagerToUseForPlayer = handManager.cardInUse.deckManager;
             GameObject cardInHand = handManager.cardInUse.gameObject;
 
-            ProcessNeutralisation(deckManagerToUseForPlayer, cardInHand);       
+            ProcessCardRemoval(deckManagerToUseForPlayer, cardInHand, type);     
 
-
-
-
-        } // not owrking for player card because it is not being clicked on
-    
-
-
-        print("cards neutralised");
+        }   
     }
 
-
+   
   
     private void CardDefeated() // if card used has bigger value than other card
     {
-        //  this.gameObject.SetActive(false);
-        //  handManager.cardInUse.gameObject.SetActive(false);
-
-        deckManager.deck.Remove(this.gameObject); // removes it from deck, puts into discarded deck
-        deckManager.discardedCards.Add(this.gameObject);
-
-        deckManager.nextCardsToPlay.Add(deckManager.deck[nextCardID]); // always plays the card in position 13 as that is the next card
-        deckManager.deck.Remove(deckManager.deck[nextCardID]);
-
-
-        this.gameObject.transform.position = deckManager.deckPosition.position; // moves it out of view
-        this.gameObject.transform.parent = deckManager.deckPosition; // gives it its new parent
-
-
+        string type = "Defeated";
+        ProcessCardRemoval(deckManager, this.gameObject, type);
 
         DeckManager deckManagerToUseForPlayer = handManager.cardInUse.deckManager;
         GameObject cardInHand = handManager.cardInUse.gameObject;
 
-        deckManagerToUseForPlayer.deck.Remove(cardInHand);
-        deckManagerToUseForPlayer.discardedCards.Add(cardInHand);
+        ProcessCardRemoval(deckManagerToUseForPlayer, cardInHand, type);
 
-        deckManagerToUseForPlayer.nextCardsToPlay.Add(deckManager.deck[nextCardID]);
-        deckManager.deck.Remove(deckManagerToUseForPlayer.deck[nextCardID]);
-
-        cardInHand.transform.parent = deckManagerToUseForPlayer.deckPosition.transform;
-        cardInHand.transform.position = deckManagerToUseForPlayer.deckPosition.position;
+    
 
         print("card defeated, your turn is over");
 
