@@ -15,7 +15,10 @@ public class Card : MonoBehaviour
 
     public bool CardUsedByPC = false;
 
-    
+
+
+    public int rowIndex, playerRowIndex; // index of the row where the card was placed
+    public Vector3 previousPosition, playerCardPreviousPosition; // world space position of the card before neutralised
     private void Start()
     {
      spriteRenderer = GetComponent<SpriteRenderer>();
@@ -77,6 +80,9 @@ public class Card : MonoBehaviour
     }
     private void CardNeutralised() // if cards have same value
     {
+
+        
+
         if (!isPlayerCard) // only works if selected card of player can interact with enemy card by being equal
         {
            
@@ -101,7 +107,7 @@ public class Card : MonoBehaviour
             DeckManager deckManagerToUseForPlayer = handManager.cardInUse.deckManager;
             GameObject cardInHand = handManager.cardInUse.gameObject;
 
-            
+           
 
             deckManagerToUseForPlayer.deck.Remove(cardInHand);
             deckManagerToUseForPlayer.discardedCards.Add(cardInHand);
@@ -113,8 +119,29 @@ public class Card : MonoBehaviour
             cardInHand.transform.position = deckManagerToUseForPlayer.deckPosition.position;
 
 
+           
             
-          
+         // if(deckManager.nextCardsToPlay.Count > 0) // this attempts to replace cards
+          /*  {               
+
+                
+
+                print("working on replacing cards");
+                GameObject nextCard = deckManager.nextCardsToPlay[0];
+                deckManager.nextCardsToPlay.RemoveAt(0);
+
+                nextCard.transform.position = this.previousPosition;
+                nextCard.transform.parent = deckManager.row[rowIndex].transform;
+                nextCard.GetComponent<Card>().rowIndex = rowIndex;
+
+
+                GameObject nextPlayerCard = deckManagerToUseForPlayer.nextCardsToPlay [0];
+                deckManagerToUseForPlayer.nextCardsToPlay.RemoveAt (0);
+
+                nextPlayerCard.transform.position= this.playerCardPreviousPosition;
+                nextPlayerCard.transform.parent = deckManagerToUseForPlayer.row[playerRowIndex].transform;
+                nextPlayerCard.GetComponent<Card>().rowIndex = playerRowIndex;
+            }*/
 
 
 

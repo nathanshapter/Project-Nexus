@@ -25,7 +25,7 @@ public class DeckManager : MonoBehaviour
 
     [SerializeField] float timeInBetweenCard = 0.3f;
 
-    [SerializeField] GameObject[] row; // holds the rows
+    public GameObject[] row; // holds the rows
 
     public List<GameObject> discardedCards; // holds cards that have been taken out of play, will re - enter after a shuffle
 
@@ -110,26 +110,38 @@ public class DeckManager : MonoBehaviour
         if (i <= 3) // puts them in the correct row based on their sequence in play
         {
             deck[i].transform.parent = row[0].transform;
+            deck[i].GetComponent<Card>().rowIndex = 0;
+            // this is top row
         }
 
 
-        if (i > 3 && i <= 6)
+        else if (i > 3 && i <= 6)
         {
             deck[i].transform.parent = row[1].transform;
+            deck[i].GetComponent<Card>().rowIndex = 1;
+            // second row
         }
 
-        if (i > 6 && i <= 8)
+        else if (i > 6 && i <= 8)
         {
             deck[i].transform.parent = row[2].transform;
+            deck[i].GetComponent<Card>().rowIndex = 2;
+            // third row
         }
-        if (i == 9)
+        else if (i == 9)
         {
             deck[i].transform.parent = row[3].transform;
+            deck[i].GetComponent<Card>().rowIndex = 3;
+            // final card
         }
-        if (i > 9)
+        else if (i > 9)
         {
             deck[i].transform.parent = row[4].transform;
+            deck[i].GetComponent<Card>().rowIndex = 4;
+
+            //cards in hand
         }
+        deck[i].GetComponent<Card>().previousPosition = deck[i].transform.position;
     }
 
 }
