@@ -61,10 +61,7 @@ public class DeckManager : MonoBehaviour
 
         StartCoroutine(PlaceCardsInHand(playerDeck));
     }
-    void ChooseRowPosition(GameObject row)
-    {
-
-    }
+    
     void ShuffleDeck() // shuffles the cards so they are not in order
     {
        

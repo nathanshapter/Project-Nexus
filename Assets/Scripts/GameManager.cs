@@ -75,49 +75,36 @@ public class GameManager : MonoBehaviour
     }
     private void CheckRowPositions(int rowIndex)
     {
-
-
         if (playerDeckManager.cardPositions.ContainsKey(rowIndex))
         {
-            
-
             List<Vector3> positions = playerDeckManager.cardPositions[rowIndex];
             Debug.Log($"Row {rowIndex} has {positions.Count} positions stored.");
 
-            foreach (var item in playerDeckManager.nextCardsToPlay)
+            for (int i = 0; i < playerDeckManager.nextCardsToPlay.Count; i++)
             {
-                print($"Next cards{item.name}");
+                var item = playerDeckManager.nextCardsToPlay[i];
+                print($"Next cards {item.name}");
 
-                if (playerDeckManager.cardPositions.ContainsKey((int)rowIndex))
+                if (playerDeckManager.cardPositions.ContainsKey(rowIndex))
                 {
-                    Vector3 rowPosition = playerDeckManager.cardPositions[(int)rowIndex].FirstOrDefault();
+                    Vector3 rowPosition = playerDeckManager.cardPositions[rowIndex].FirstOrDefault();
                     item.GetComponent<Card>().rowIndex = rowIndex;
 
                     item.transform.parent = playerDeckManager.row[4].transform;
-
                     item.transform.position = rowPosition;
-
-                    if(playerDeckManager != null)
-                    {
-                        item.GetComponent<Card>().isInHand = true;
-                    }
-                    
-
-                    
-                   
+                    item.GetComponent<Card>().isInHand = true;
 
 
-                  //  print($"card{playerDeckManager.nextCardsToPlay[0]} given row index {rowIndex}");
+                    // If the card needs to be removed after positioning, use this:
+                    playerDeckManager.nextCardsToPlay.RemoveAt(i);
+                    i--; // Adjust index to account for removed item to prevent skipping
                 }
-
-               
-
             }
-         
         }
         else
         {
-            Debug.Log($"Row {rowIndex} for does not exist in the dictionary.");
+            Debug.Log($"Row {rowIndex} does not exist in the dictionary.");
         }
     }
+
 }

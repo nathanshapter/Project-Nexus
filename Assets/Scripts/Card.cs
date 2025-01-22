@@ -48,6 +48,9 @@ public class Card : MonoBehaviour
     {
         Debug.Log($"Card selected is {name}");
 
+        
+
+
 
         ProcessPlayerCard();
         ProcessNonPlayerCard();
