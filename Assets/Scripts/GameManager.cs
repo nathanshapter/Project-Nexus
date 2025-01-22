@@ -15,17 +15,40 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if(instance !=null && instance == this)
+        if (instance == null)
         {
-            Destroy(gameObject);
-            return;
+            // If no instance exists, set this one as the instance and prevent it from being destroyed.
+            instance = this;
+            DontDestroyOnLoad(gameObject);
         }
-        instance = this;
-        DontDestroyOnLoad(gameObject);
-        npc = FindFirstObjectByType<PCBrain>();        
+        else if (instance != this)
+        {
+            // If an instance exists and it's not this one, destroy this duplicate.
+            Destroy(gameObject);
+        }
+        InitializeNPC();
+
+        if(playerDeckManager == null)
+        {
+            print("get player deck manager");
+        }
+        if (computerDeckManager == null)
+        {
+            print("get PC deck manager");
+        }    
     }
 
-   public void FlipTurn()
+    private void InitializeNPC()
+    {
+        // Find PCBrain in the current scene
+        npc = FindFirstObjectByType<PCBrain>();
+        if (npc == null)
+        {
+            Debug.LogWarning("PCBrain not found in the current scene.");
+        }
+    }
+
+    public void FlipTurn()
     {
         playerTurn = !playerTurn;
 
@@ -47,7 +70,7 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyUp(KeyCode.Escape)) 
         {
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
         
@@ -101,25 +124,16 @@ public class GameManager : MonoBehaviour
                     {
                         playerDeckManager.cardPositions.Remove(rowIndex);
                     }
+
+                    if(playerDeckManager.nextCardsToPlay.Count > 0)
+                    {
+                        playerDeckManager.nextCardsToPlay.RemoveAt(i);
+                    }
+                    
                 }
 
 
-              /*  if (playerDeckManager.cardPositions.ContainsKey(rowIndex))
-                {
-                    Vector3 rowPosition = playerDeckManager.cardPositions[rowIndex].FirstOrDefault();
-                    item.GetComponent<Card>().rowIndex = rowIndex;
 
-                    item.transform.parent = playerDeckManager.row[4].transform;
-                    item.transform.position = rowPosition;
-                    item.GetComponent<Card>().isInHand = true;
-
-
-                    // If the card needs to be removed after positioning, use this:
-                    playerDeckManager.nextCardsToPlay.RemoveAt(i);
-                    i--; // Adjust index to account for removed item to prevent skipping
-
-                    playerDeckManager.cardPositions.Remove(rowIndex);
-                }*/
             }
         }
         else
