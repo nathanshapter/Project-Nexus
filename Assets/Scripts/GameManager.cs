@@ -75,6 +75,8 @@ public class GameManager : MonoBehaviour
     }
     private void CheckRowPositions(int rowIndex)
     {
+
+
         if (playerDeckManager.cardPositions.ContainsKey(rowIndex))
         {
             
@@ -89,9 +91,17 @@ public class GameManager : MonoBehaviour
                 if (playerDeckManager.cardPositions.ContainsKey((int)rowIndex))
                 {
                     Vector3 rowPosition = playerDeckManager.cardPositions[(int)rowIndex].FirstOrDefault();
-                    item.GetComponent<Card>().rowIndex = (int)rowIndex;
+                    item.GetComponent<Card>().rowIndex = rowIndex;
+
                     item.transform.parent = playerDeckManager.row[4].transform;
 
+                    item.transform.position = rowPosition;
+
+                    if(playerDeckManager != null)
+                    {
+                        item.GetComponent<Card>().isInHand = true;
+                    }
+                    
 
                     
                    

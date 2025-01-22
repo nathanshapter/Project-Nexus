@@ -126,6 +126,10 @@ public class Card : MonoBehaviour
         cardGO.transform.position =deckManager.deckPosition.position;
         cardGO.transform.parent = deckManager.deckPosition;
 
+        //removes check that card is in hand
+
+        cardGO.GetComponent<Card>().isInHand = false;
+
         Debug.Log($"Card Neutralised{ deckManager.name + cardGO.name} by type of {removalType}");
     }
 
