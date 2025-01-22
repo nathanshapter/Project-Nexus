@@ -85,7 +85,26 @@ public class GameManager : MonoBehaviour
                 var item = playerDeckManager.nextCardsToPlay[i];
                 print($"Next cards {item.name}");
 
-                if (playerDeckManager.cardPositions.ContainsKey(rowIndex))
+                if(positions.Count > 0)
+                {
+                    Vector3 rowPosition = positions[0];
+                    item.GetComponent<Card>().rowIndex = rowIndex;
+
+                    item.transform.parent = playerDeckManager.row[4].transform;
+                    item.transform.position = rowPosition;
+
+                    item.GetComponent<Card>().isInHand = true;
+
+                    positions.RemoveAt(0);
+
+                    if(positions.Count == 0)
+                    {
+                        playerDeckManager.cardPositions.Remove(rowIndex);
+                    }
+                }
+
+
+              /*  if (playerDeckManager.cardPositions.ContainsKey(rowIndex))
                 {
                     Vector3 rowPosition = playerDeckManager.cardPositions[rowIndex].FirstOrDefault();
                     item.GetComponent<Card>().rowIndex = rowIndex;
@@ -98,7 +117,9 @@ public class GameManager : MonoBehaviour
                     // If the card needs to be removed after positioning, use this:
                     playerDeckManager.nextCardsToPlay.RemoveAt(i);
                     i--; // Adjust index to account for removed item to prevent skipping
-                }
+
+                    playerDeckManager.cardPositions.Remove(rowIndex);
+                }*/
             }
         }
         else
