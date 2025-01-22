@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -38,6 +40,7 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         ReloadScene();
+        DrawCardForPlayer();
     }
 
     void ReloadScene()
@@ -60,5 +63,51 @@ public class GameManager : MonoBehaviour
         // its vector 3 saved. once the card is ready to be placed there it needs only to access the list of vector3 to be replaced in order
 
 
+    }
+    public void DrawCardForPlayer() // for debugging purposes
+    {
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            print("player attempted to draw cards");
+
+            CheckRowPositions(4);
+        }
+    }
+    private void CheckRowPositions(int rowIndex)
+    {
+        if (playerDeckManager.cardPositions.ContainsKey(rowIndex))
+        {
+            
+
+            List<Vector3> positions = playerDeckManager.cardPositions[rowIndex];
+            Debug.Log($"Row {rowIndex} has {positions.Count} positions stored.");
+
+            foreach (var item in playerDeckManager.nextCardsToPlay)
+            {
+                print($"Next cards{item.name}");
+
+                if (playerDeckManager.cardPositions.ContainsKey((int)rowIndex))
+                {
+                    Vector3 rowPosition = playerDeckManager.cardPositions[(int)rowIndex].FirstOrDefault();
+                    item.GetComponent<Card>().rowIndex = (int)rowIndex;
+                    item.transform.parent = playerDeckManager.row[4].transform;
+
+
+                    
+                   
+
+
+                  //  print($"card{playerDeckManager.nextCardsToPlay[0]} given row index {rowIndex}");
+                }
+
+               
+
+            }
+         
+        }
+        else
+        {
+            Debug.Log($"Row {rowIndex} for does not exist in the dictionary.");
+        }
     }
 }

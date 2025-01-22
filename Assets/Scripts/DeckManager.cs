@@ -31,7 +31,12 @@ public class DeckManager : MonoBehaviour
 
     public List<GameObject> nextCardsToPlay; // makes a list of the next cards that will come in to play
 
-    
+   
+
+    public Dictionary<int, List<Vector3>> cardPositions = new Dictionary<int, List<Vector3>>();
+
+  
+
     private void Start()
     {
         for (int i = 0; i < playingCardPosition.Length; i++) // deactivates the playing cards positions visuals (alll the default 2 on screen)

@@ -1,3 +1,5 @@
+using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Card : MonoBehaviour
@@ -23,6 +25,8 @@ public class Card : MonoBehaviour
     public Vector3 previousPosition, playerCardPreviousPosition; // world space position of the card before neutralised
 
     public bool cardRemovedByPC = false; // when cards are put back into play this needs to be set to false. will cause issues if not
+
+   
     private void Start()
     {
      spriteRenderer = GetComponent<SpriteRenderer>();
@@ -103,6 +107,20 @@ public class Card : MonoBehaviour
         //remove the next card to play, and putting it into the next card to play 
         deckManager.deck.Remove(deckManager.deck[nextCardID]);
         deckManager.nextCardsToPlay.Add(deckManager.deck[nextCardID]);
+
+        //if the rowindex is already in the dictionary, add the position to the list, otherwise create a new list
+
+        if (!deckManager.cardPositions.ContainsKey(cardGO.GetComponent<Card>().rowIndex))
+        {
+            deckManager.cardPositions[cardGO.GetComponent<Card>().rowIndex] = new List<Vector3>();
+        }
+        deckManager.cardPositions[cardGO.GetComponent<Card>().rowIndex].Add(cardGO.transform.position);
+
+        foreach (var entry in deckManager.cardPositions)
+        {
+            Debug.Log($"{deckManager.name} Row Index: {entry.Key}, Positions: {string.Join(", ", entry.Value)}");
+        }
+
 
         // removes the card off the playing field by position, and sets its parent to the deck
         cardGO.transform.position =deckManager.deckPosition.position;
