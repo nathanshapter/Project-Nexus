@@ -4,7 +4,7 @@ using UnityEngine;
 public class PCBrain : MonoBehaviour // script is used to take care of all of the information the PC has
 {
 
-    DeckManager deckManager; 
+    DeckManager deckManager, playerDeckManager; 
     [SerializeField] GameObject PCHand; // holds the PC hand
 
     [SerializeField] List<Card> cardsInPCHand; // references the cards in PC hand
@@ -18,6 +18,7 @@ public class PCBrain : MonoBehaviour // script is used to take care of all of th
     private void Start()
     {
         deckManager = GetComponent<DeckManager>();
+        playerDeckManager = GameManager.instance.FindDeckManager("PlayerDeck");
     }
     public void ProcessPCTurn()
     {
@@ -61,6 +62,28 @@ public class PCBrain : MonoBehaviour // script is used to take care of all of th
 
                     // Add the card to the removal list instead of removing it directly
                     cardsToRemove.Add(pcCard);
+
+
+
+                    // need to add this to card positions dictionary
+                    if (!playerDeckManager.cardPositions.ContainsKey(playerCard.rowIndex))
+                    {
+                        playerDeckManager.cardPositions[playerCard.rowIndex] = new List<Vector3>();
+                        print($"card added to row index at {playerCard.rowIndex}");
+
+                       // this is sort of working, except it is saving the same position twice
+
+                    }
+
+                    playerDeckManager.cardPositions[playerCard.rowIndex].Add(playerCard.transform.position);
+
+                    foreach (var entry in playerDeckManager.cardPositions)
+                    {
+                        Debug.Log($"{deckManager.name} Row Index: {entry.Key}, Positions: {string.Join(", ", entry.Value)}");
+                    }
+
+
+
                     break; // Exit the inner loop as the card has been neutralized
                 }
             }

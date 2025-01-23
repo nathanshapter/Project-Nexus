@@ -78,7 +78,7 @@ public class GameManager : MonoBehaviour
         
     }
 
-    private DeckManager FindDeckManager(string managerName)
+    public DeckManager FindDeckManager(string managerName)
     {
         GameObject managerObject = GameObject.FindGameObjectWithTag(managerName);
         return managerObject != null ? managerObject.GetComponent<DeckManager>() : null;
