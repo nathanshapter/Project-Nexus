@@ -267,9 +267,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7668884634585316258}
   - component: {fileID: 7130051867344519494}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DeckManager (Player)
-  m_TagString: Untagged
+  m_TagString: PlayerDeck
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -345,7 +345,6 @@ MonoBehaviour:
   - {fileID: 6953738788777112509}
   discardedCards: []
   nextCardsToPlay: []
-  cardPositionsForHand: []
 --- !u!1 &6953738788777112509
 GameObject:
   m_ObjectHideFlags: 0

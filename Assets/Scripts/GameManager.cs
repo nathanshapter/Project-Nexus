@@ -28,14 +28,7 @@ public class GameManager : MonoBehaviour
         }
         InitializeNPC();
 
-        if(playerDeckManager == null)
-        {
-            print("get player deck manager");
-        }
-        if (computerDeckManager == null)
-        {
-            print("get PC deck manager");
-        }    
+         
     }
 
     private void InitializeNPC()
@@ -47,6 +40,7 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("PCBrain not found in the current scene.");
         }
     }
+
 
     public void FlipTurn()
     {
@@ -71,9 +65,23 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Escape)) 
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+           
         }
 
+       
+         
+            playerDeckManager = FindDeckManager("PlayerDeck");
         
+        
+       
+           computerDeckManager = FindDeckManager("PCDeck");
+        
+    }
+
+    private DeckManager FindDeckManager(string managerName)
+    {
+        GameObject managerObject = GameObject.FindGameObjectWithTag(managerName);
+        return managerObject != null ? managerObject.GetComponent<DeckManager>() : null;
     }
 
     public void PlayersTakeNextCards(DeckManager deckManager)
