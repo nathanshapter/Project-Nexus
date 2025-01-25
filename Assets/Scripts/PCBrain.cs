@@ -65,22 +65,40 @@ public class PCBrain : MonoBehaviour // script is used to take care of all of th
 
 
 
-                    // need to add this to card positions dictionary
+                    // need to add this to card positions dictionary this checks if the row index does not exist
                     if (!playerDeckManager.cardPositions.ContainsKey(playerCard.rowIndex))
                     {
                         playerDeckManager.cardPositions[playerCard.rowIndex] = new List<Vector3>();
                         print($"card added to row index at {playerCard.rowIndex}");
 
-                       // this is sort of working, except it is saving the same position twice
+                  
 
                     }
+
+                    if (!playerDeckManager.cardPositions[playerCard.rowIndex].Contains(playerCard.transform.position))
+                    {
+                        playerDeckManager.cardPositions[playerCard.rowIndex].Add(playerCard.transform.position);
+                        print($"Added position {playerCard.transform.position} to row index {playerCard.rowIndex}");
+                    }
+                   
+
+                    foreach (var entry in playerDeckManager.cardPositions)
+                    {
+                        Debug.Log($"Checking match : {playerDeckManager.name} Row Index: {entry.Key}, Positions: {string.Join(", ", entry.Value)}");
+                    }
+
+
+
 
                     playerDeckManager.cardPositions[playerCard.rowIndex].Add(playerCard.transform.position);
 
                     foreach (var entry in playerDeckManager.cardPositions)
                     {
-                        Debug.Log($"{deckManager.name} Row Index: {entry.Key}, Positions: {string.Join(", ", entry.Value)}");
+                        Debug.Log($"{playerDeckManager.name} Row Index: {entry.Key}, Positions: {string.Join(", ", entry.Value)}");
                     }
+
+                    // need to add the cards to the PC deck maanger here
+
 
 
 
@@ -183,9 +201,63 @@ public class PCBrain : MonoBehaviour // script is used to take care of all of th
         {
             GameManager.instance.PlayersTakeNextCards(deckManager);
             GameManager.instance.PlayersTakeNextCards(playerCard.deckManager);
-            print("it is now the players turn");
+            print("it is now the players turn again");
+
+            CheckRowPositions(4);
+
         }
 
 
+    }
+
+    private void CheckRowPositions(int rowIndex)
+    {
+        print("ran");
+        if (deckManager.cardPositions.ContainsKey(rowIndex))
+        {
+            print("started");
+            List<Vector3> positions = deckManager.cardPositions[rowIndex];
+            Debug.Log($"Row {rowIndex} has {positions.Count} positions stored.");
+
+            for (int i = 0; i < deckManager.nextCardsToPlay.Count; i++)
+            {
+                var item = deckManager.nextCardsToPlay[i];
+                item.GetComponent<Card>().isPlayerCard = false;
+                print($"Next cards {item.name}");
+
+                if (positions.Count > 0)
+                {
+                    Vector3 rowPosition = positions[0];
+                    item.GetComponent<Card>().rowIndex = rowIndex;
+
+                    item.transform.parent = deckManager.row[4].transform;
+                    item.transform.position = rowPosition;
+
+
+
+                    item.GetComponent<Card>().isInHand = true;
+
+                    positions.RemoveAt(0);
+
+                    if (positions.Count == 0)
+                    {
+                        deckManager.cardPositions.Remove(rowIndex);
+                    }
+
+                    if (deckManager.nextCardsToPlay.Count > 0)
+                    {
+                        deckManager.nextCardsToPlay.RemoveAt(i);
+                    }
+
+                }
+
+
+
+            }
+        }
+        else
+        {
+            Debug.Log($"Row {rowIndex} does not exist in the dictionary.");
+        }
     }
 }

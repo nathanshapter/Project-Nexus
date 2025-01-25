@@ -58,6 +58,7 @@ public class GameManager : MonoBehaviour
     {
         ReloadScene();
         DrawCardForPlayer();
+        TestPosition();
     }
 
     void ReloadScene()
@@ -86,10 +87,10 @@ public class GameManager : MonoBehaviour
 
     public void PlayersTakeNextCards(DeckManager deckManager)
     {
-        foreach (var item in deckManager.nextCardsToPlay)
-        {
-            print($"Card in reserve for {deckManager.name} + {item.name}");
-        }
+       // foreach (var item in deckManager.nextCardsToPlay)
+      //  {
+         //   print($"Card in reserve for {deckManager.name} + {item.name}");
+     //   }
         // when the card is taking out of the hand, the next card needs to be put into the player hand row. the previous card needs to have
         // its vector 3 saved. once the card is ready to be placed there it needs only to access the list of vector3 to be replaced in order
 
@@ -104,6 +105,18 @@ public class GameManager : MonoBehaviour
             CheckRowPositions(4);
         }
     }
+    public void TestPosition()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            print("defend works?");
+            
+
+         //   Vector3 position = playerDeckManager.cardPositions[0][0];
+
+           // playerDeckManager.nextCardsToPlay[0].transform.position = position;
+        }
+    }
     private void CheckRowPositions(int rowIndex)
     {
         if (playerDeckManager.cardPositions.ContainsKey(rowIndex))
@@ -114,6 +127,7 @@ public class GameManager : MonoBehaviour
             for (int i = 0; i < playerDeckManager.nextCardsToPlay.Count; i++)
             {
                 var item = playerDeckManager.nextCardsToPlay[i];
+                item.GetComponent<Card>().isPlayerCard = true;
                 print($"Next cards {item.name}");
 
                 if(positions.Count > 0)
@@ -123,6 +137,8 @@ public class GameManager : MonoBehaviour
 
                     item.transform.parent = playerDeckManager.row[4].transform;
                     item.transform.position = rowPosition;
+
+                    
 
                     item.GetComponent<Card>().isInHand = true;
 
