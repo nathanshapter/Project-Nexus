@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,6 +27,8 @@ public class Card : MonoBehaviour
 
     public bool cardRemovedByPC = false; // when cards are put back into play this needs to be set to false. will cause issues if not
 
+    public bool isPositionCard = false;
+
    
     private void Start()
     {
@@ -40,9 +43,22 @@ public class Card : MonoBehaviour
         {
             isPlayerCard = false;
         }
+
+        if (!isPositionCard) 
+        {
+          StartCoroutine(PlaceCardsInNewPosition());
+        }
     }
 
+    private IEnumerator PlaceCardsInNewPosition() 
+    {
+        yield return new WaitForSeconds(6);
 
+        print("check");
+        float zPosition = 0;
+
+        this.gameObject.transform.position = new Vector3(transform.position.x, transform.position.y, zPosition);
+    }
 
     private void OnMouseDown()
     {

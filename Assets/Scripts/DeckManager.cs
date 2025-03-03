@@ -41,7 +41,8 @@ public class DeckManager : MonoBehaviour
     {
         for (int i = 0; i < playingCardPosition.Length; i++) // deactivates the playing cards positions visuals (alll the default 2 on screen)
         {
-            playingCardPosition[i].gameObject.SetActive(false);
+            //   playingCardPosition[i].gameObject.SetActive(false);
+            playingCardPosition[i].gameObject.GetComponent<SpriteRenderer>().enabled = false;
         }
 
         for (int i = 0; i < numberOfCardsInDeck; i++)  // creates the deck for player and PC
@@ -55,7 +56,7 @@ public class DeckManager : MonoBehaviour
            
             
         }
-      
+       
 
         ShuffleDeck();
 
